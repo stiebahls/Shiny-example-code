@@ -1,0 +1,257 @@
+ @import url('https://fonts.googleapis.com/css2?family=Open Sans&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+
+ .leaflet-container {
+   background: #FFFFFF;
+ }
+
+ th {
+   background-color: #F0EEED;
+   font-size: 10.5pt;
+ }
+
+ td {
+   font-size: 10.5pt;
+   border-bottom: 1px solid #ddd
+ }
+
+ .shade {
+   background: #9F6DB3;
+   color: white;
+   font-weight: bold;
+ }
+
+ html,
+ body,
+ #map {
+
+   height: 100%;
+   width: 100%;
+ }
+
+ .blueshade {
+   background: #597fda;
+   color: white;
+   font-weight: bold;
+ }
+
+ .bold {
+   font-weight: 1200;
+ }
+
+ h2 {
+   font-size: 14pt;
+   font-weight: bold;
+   color: #006548;
+   padding-bottom: 5px;
+   line-height: 1.2;
+ }
+
+ body {
+   font-family: 'Open Sans';
+   font-size: 10.5pt;
+ }
+
+ bodytext {
+   padding-top: 100px;
+   padding-bottom: 100px;
+ }
+
+ .nav-tabs {
+   text-align: center;
+   border-bottom-width: 0px !important;
+   border-bottom-color: white !important;
+   font-size: 16px;
+   font-weight: bold;
+   text-align: left;
+   padding-bottom: 10px;
+   padding-right: 15px;
+ }
+
+ .nav-pills .nav-link:not(.active) {
+   background-color: #F0EEED;
+   color: #006548;
+   border-bottom-width: 0px !important;
+   border-right-width: 5px !important;
+   border-left-width: 5px !important;
+   border-bottom-color: white !important;
+   font-size: 16px;
+   font-weight: bold;
+   text-align: left;
+   padding-bottom: 10px;
+   padding-right: 15px;
+ }
+
+ .nav-pills .nav-link.active {
+   background-color: #006548 !important;
+   color: white;
+   border-bottom-width: 0px !important;
+   border-right-width: 5px !important;
+   border-left-width: 5px !important;
+   border-bottom-color: white !important;
+   font-size: 16px;
+   font-weight: bold;
+   text-align: left;
+   padding-bottom: 10px;
+   padding-right: 15px;
+
+ }
+
+ .nav-pills .nav-link:hover {
+   background-color: #7FCBBD !important;
+   color: #006548 !important;
+   border-bottom-width: 0px !important;
+   border-right-width: 5px !important;
+   border-left-width: 5px !important;
+   border-bottom-color: white !important;
+   font-size: 16px;
+   font-weight: bold;
+   text-align: left;
+   padding-bottom: 10px;
+   padding-right: 15px;
+ }
+
+ .nav-tabs>li.active>a,
+ .nav-tabs>li.active>a:focus,
+ .nav-tabs>li.active>a:hover {
+   color: #ffffff;
+   cursor: default;
+   background-color: #006648;
+   border-bottom-width: 0px !important;
+ }
+
+ .nav-tabs>li>a {
+   color: #006648;
+   background-color: #F0EEED;
+ }
+
+ .nav-tabs>li>a:hover {
+   color: #006648;
+   background-color: #ABDED3;
+   border-bottom-width: 0px !important;
+ }
+
+ /*  table.dataTable tbody td {
+        background-color: #FFFFFF !important;
+        } */
+
+ table.dataTable tbody tr.selected>* {
+   box-shadow: inset 0 0 0 9999px #FFCB53;
+ }
+
+ table.dataTable thead th {
+   background-color: #F0EEED;
+ }
+
+ .leaflet-control {
+   font-family: 'Open Sans';
+   font-size: 10pt;
+   font-weight: normal;
+ }
+
+ .form-control:focus {
+   border-color: #ffffff;
+   box-shadow: 0px 1px 1px #ffffff inset, 0px 0px 8px #ffffff;
+ }
+
+ .leaflet-popup-content-wrapper {
+   color: black;
+   font-family: 'Open Sans';
+   font-weight: Bold;
+   font-size: 14px;
+   border-color: rgba(0, 0, 0, 0.5);
+ }
+
+ .download {
+  background-color: #ffffff !important;
+  font-size: 13px !important;
+font-weight: Bold !important;
+  color: #222222 !important;
+}
+
+/* Hover, focus, active states */
+.download:hover,
+.download:focus,
+.download:active,
+.download.active {
+  background-color: #7FCBBD !important;
+  color: #222222 !important;
+  font-weight: bold !important;
+}
+
+/* Optional: special toggle-style override like your example */
+.toggle.download:hover {
+  background-color: #006548 !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+ .notetext {
+   font-size: 10pt;
+   color: #006548;
+ }
+
+ .leaflet .legend {
+   color: #000000;
+ }
+
+ .leaflet-control-layers {
+   background: rgba(254, 254, 254, 0.3);
+   outline: none;
+   border: none;
+ }
+
+ .radioSelect {
+   z-index: 1002;
+ }
+
+ .picker {
+   z-index: 1004;
+ }
+
+ .pickerhigh {
+   z-index: 1008;
+ }
+
+ .pickerhigher {
+   z-index: 1012;
+ }
+
+ .pickerhighest {
+   z-index: 1016;
+ }
+
+
+.bootstrap-select > .dropdown-toggle {
+  background-color: #006548 !important;
+  color: white !important;
+  font-size: 15px !important;
+  border-color: #006548 !important;
+  font-weight: bold !important;
+}
+
+
+.bootstrap-select > .dropdown-toggle:hover,
+.bootstrap-select > .dropdown-toggle:focus,
+.bootstrap-select > .dropdown-toggle:active {
+  background-color: #7FCBBD !important;
+  color: #222222 !important;
+}
+
+
+ .bootstrap-select .dropdown-menu li a.active,
+ .bootstrap-select .dropdown-menu li a:active {
+   background-color: #006548 !important;
+   color: white !important;
+ }
+
+ .bootstrap-select .dropdown-menu li a:hover {
+   background-color: #6DC5B4 !important;
+   color: black !important;
+   /* optional */
+ }
+
+ .reactable .rt-th {
+  background-color: #000000;
+}
