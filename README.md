@@ -23,7 +23,7 @@ so you can see how the three pieces connect and reuse the pattern for your own d
 7. [Element guide](#7-element-guide)
    - [7.1 Dropdown (the input)](#71-dropdown-the-input)
    - [7.2 Charts (plotly)](#72-charts-plotly)
-   - [7.3 Tables (DT, with a reactable alternative)](#73-tables-dt-with-a-reactable-alternative)
+   - [7.3 Tables (DT)](#73-tables-dt)
    - [7.4 Maps (leaflet)](#74-maps-leaflet)
    - [7.5 Text (static and dynamic)](#75-text-static-and-dynamic)
    - [7.6 Download button](#76-download-button)
