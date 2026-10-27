@@ -43,7 +43,7 @@ A dropdown at the top of the page controls everything.
 
 ## 2. Required packages
 
-You need [R](https://cran.r-project.org/){:target="_blank"} and (recommended) [Positron](https://positron.posit.co/download.html){target="_blank"}. You can find information on how to install this in our [R guidance folder](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}.
+You need [R](https://cran.r-project.org/) and (recommended) [Positron](https://positron.posit.co/download.html). You can find information on how to install this in our [R guidance folder](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5).
 
 The app loads these packages in `R/1_setup.R`:
 
@@ -141,7 +141,7 @@ pickerInput(
 
 Reactives are used to get an input value to render an output object. For example, you may want the data that is presented to be dependent on the constituency that a customer selects.
 
-For a fuller explanation of reactivity in Shiny, see the [Posit guidance on getting started in Shiny](https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/reactive-flow.html){target="_blank"}.
+For a fuller explanation of reactivity in Shiny, see the [Posit guidance on getting started in Shiny](https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/reactive-flow.html).
 
 This code shows two reactives which filter a dataset based on the constituency dropdown:
 
@@ -333,7 +333,7 @@ p_rating_column <- function(df) {
 
 - The `text = ...` aesthetic is what the hover tooltip shows.
 - The data frame passed in must contain the columns that you use (in this case `CURRENT_ENERGY_RATING` and `number`).
-- For more example chart code, see the [clcharts](https://github.com/houseofcommonslibrary/clcharts){target="_blank"} `README`
+- For more example chart code, see the [clcharts](https://github.com/houseofcommonslibrary/clcharts) `README`
 
 **Converter functions** turn a ggplot into a plotly chart and switch off the controls you don't want (zoom, drag, the mode bar):
 
@@ -845,7 +845,7 @@ Things that must line up:
 
 To use a different geography (local authorities, regions, schools...), swap `constituency`/`CONSTITUENCY` for your equivalent throughout, and keep the same pattern: one dropdown, one code-lookup reactive, filtered reactives, and render/output pairs.
 
-For template code for different maps, see the Code projects folder on the H drive. Also see our [guidance on creating maps in R](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5&id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance%2FMapping%20in%20R%2Ehtml&parent=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance){target="_blank"}.
+For template code for different maps, see the Code projects folder on the H drive. Also see our [guidance on creating maps in R](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5&id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance%2FMapping%20in%20R%2Ehtml&parent=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance).
 
 ## 10. Troubleshooting
 
@@ -861,10 +861,10 @@ For template code for different maps, see the Code projects folder on the H driv
 
 ## Other resources
 
-- [For layout and design, see our dashboard guidance](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI%2F3%20Designing%20and%20building%20a%20dashboard&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}
-- [Mastering Shiny](https://mastering-shiny.org/){target="_blank"} (free online book, paper version lives on Sonja's desk)
-- [Shiny documentation](https://shiny.posit.co/r/getstarted/){target="_blank"}
-- [bslib](https://rstudio.github.io/bslib/){target="_blank"} for page layouts
-- [plotly for R](https://plotly.com/r/){target="_blank"}, [DT](https://rstudio.github.io/DT/){target="_blank"}, and [leaflet for R](https://rstudio.github.io/leaflet/){target="_blank"}
-- [More general guidance on dashboards](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}
+- [For layout and design, see our dashboard guidance](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI%2F3%20Designing%20and%20building%20a%20dashboard&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5)
+- [Mastering Shiny](https://mastering-shiny.org/) (free online book, paper version lives on Sonja's desk)
+- [Shiny documentation](https://shiny.posit.co/r/getstarted/)
+- [bslib](https://rstudio.github.io/bslib/) for page layouts
+- [plotly for R](https://plotly.com/r/), [DT](https://rstudio.github.io/DT/), and [leaflet for R](https://rstudio.github.io/leaflet/)
+- [More general guidance on dashboards](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5)
 
