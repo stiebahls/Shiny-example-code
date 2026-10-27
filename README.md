@@ -43,7 +43,7 @@ A dropdown at the top of the page controls everything.
 
 ## 2. Required packages
 
-You need [R](https://cran.r-project.org/){target="_blank"} and (recommended) [Positron](https://positron.posit.co/download.html){target="_blank"}. You can find information on how to install this in our [R guidance folder](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}.
+You need [R](https://cran.r-project.org/){:target="_blank"} and (recommended) [Positron](https://positron.posit.co/download.html){target="_blank"}. You can find information on how to install this in our [R guidance folder](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}.
 
 The app loads these packages in `R/1_setup.R`:
 
