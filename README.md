@@ -4,17 +4,15 @@ This repository is a working example of a small Shiny dashboard that shows Energ
 
 It is designed to be read and copied. Each page element (chart, table, map, text, download) is explained below with:
 
-1. what you need in the **setup/helper files** (`R/`),
+1. what you need in the **setup/helper files** (in the `R/` folder),
 2. what you need in **`ui.R`**,
 3. what you need in **`server.R`**,
 
 so you can see how the three pieces connect and reuse the pattern for your own data.
 
----
-
 ## Contents
 
-1. [What you'll build](#1-what-youll-build)
+1. [What the dashboard does](#1-what-the-dashboard-does)
 2. [Required packages](#2-required-packages)
 3. [Project structure](#3-project-structure)
 4. [How the files connect](#4-how-the-files-connect)
@@ -34,9 +32,7 @@ so you can see how the three pieces connect and reuse the pattern for your own d
 9. [Using your own data](#9-using-your-own-data)
 10. [Troubleshooting](#10-troubleshooting)
 
----
-
-## 1. What you'll build
+## 1. What the dashboard does
 
 | Tab | Contents |
 | --- | --- |
@@ -47,7 +43,7 @@ A dropdown at the top of the page controls everything.
 
 ## 2. Required packages
 
-You need [R](https://cran.r-project.org/) and (recommended) [RStudio](https://posit.co/download/rstudio-desktop/).
+You need [R](https://cran.r-project.org/){target="_blank"} and (recommended) [Positron](https://positron.posit.co/download.html){target="_blank"}. You can find information on how to install this in our [R guidance folder](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}.
 
 The app loads these packages in `R/1_setup.R`:
 
@@ -107,16 +103,15 @@ Things worth knowing:
 - **`global.R` runs once** before the UI and server, and is the place for app-wide settings. We only really use this to enable deep-linking (ie the ability to refer to a specific constituency in the link we send to customers).
 - **The `data/` file names are the ones the code reads.** If you rename them, update the `read_csv()` and `st_read()` calls in `R/1_setup.R`.
 
-**Note on the data files:** the files in `data/` need the columns the code expects (listed in [section 9](#9-using-your-own-data)). Your own versions can contain different values as long as the column names match.
-
+**Note on the data files:** the files in `data/` need the columns the code expects (listed in [section 9](#9-using-your-own-data)). Your own versions will contain different values so when you adapt the example code, make sure you edit the column names so that they match yours.
 
 ## 4. How the files connect
 
 ISABEL MAKING CHART
 
-The link between `ui.R` and `server.R` is **the output ID string**. If `server.R` defines `output$ratings_column`, `ui.R` shows it with `plotlyOutput("ratings_column")`. If the names don't match exactly, nothing appears.
+The link between `ui.R` and `server.R` is the output ID string. If `server.R` defines `output$ratings_column`, `ui.R` shows it with `plotlyOutput("ratings_column")`. If the names don't match exactly, nothing appears.
 
-The helper files hold the *work* (building a chart, formatting a table, writing a sentence). `server.R` stays short: it just filters the data and passes it to those functions.
+The helper files from the `R/` folder hold the work (building a chart, formatting a table, writing a sentence). `server.R` stays short: it just filters the data and passes it to those functions, ie, it handles the reactive content that is controlled by the dropdown menu
 
 ## 5. Running the app
 
@@ -133,14 +128,22 @@ Every element in this app follows the same three steps.
 **1. An input (eg a constituency drop down) captures the user's choice** (`ui.R`):
 
 ```r
-pickerInput("conSelect", "Select a constituency", choices = constituencies$CONSTITUENCY_LABEL)
+pickerInput(
+  "conSelect",                                   # the input ID: read in server.R as input$conSelect
+  "Select a constituency",                       # label shown above the dropdown
+  choices = constituencies$CONSTITUENCY_LABEL,   # options in the dropdown, from geographies.csv, loaded in 1_setup.R
+  selected = constituencies$CONSTITUENCY_LABEL[[1]],  # default value (first constituency that appears in the list)
+  options = list(`live-search` = TRUE, size = 15, width = "150%") # enables search within dropdown (ie typing in a constituency name) and sets the number of visible items (15).
+)
 ```
 
 **2. Reactives filter the data using that choice** (`server.R`):
 
 Reactives are used to get an input value to render an output object. For example, you may want the data that is presented to be dependent on the constituency that a customer selects.
 
-For a fuller explanation of reactivity in Shiny, see the [Posit guidance on getting started in Shiny](https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/reactive-flow.html).
+For a fuller explanation of reactivity in Shiny, see the [Posit guidance on getting started in Shiny](https://shiny.posit.co/r/getstarted/build-an-app/reactive-flow/reactive-flow.html){target="_blank"}.
+
+This code shows two reactives which filter a dataset based on the constituency dropdown:
 
 ```r
 constituency_code <- reactive({
@@ -154,6 +157,14 @@ ratings_con <- reactive({
 ```
 Note that the input is based on constituency names (`choices = constituencies$CONSTITUENCY_LABEL`) while the reactive filter uses constituency codes `filter(constituency_ratings, CONSTITUENCY == constituency_code())` that are linked to the names. This avoids issues that might arise from changes in names or (mis-)spellings.
 
+In simpler cases, when you can filter directly on the input, you only need one reactive. For example, if `input$conSelect` was the constituency code, you could directly filter the data using the input:
+
+```r
+ratings_con <- reactive({
+  filter(constituency_ratings, CONSTITUENCY == input$conSelect())
+})
+```
+
 A `reactive()` re-runs automatically whenever something it depends on changes. Call it like a function: `ratings_con()`.
 
 ### Best practice for reactives
@@ -162,7 +173,7 @@ Please follow these instructions when creating reactives:
 
 **Do:**
 
-- Use `reactive()` as a default function for defining your reactive values. Almost all functionality for Library dashboards is most appropriate using this method and it makes code easier to read. There are other ways of defining reactives that are sometimes required, for example if you need a dashboard to remember certain states – ask a colleague if you need one of these.
+- Use `reactive()` as a default function for defining your reactive values. Almost all functionality for Library dashboards is most appropriate using this method and it makes code easier to read. There are other ways of defining reactives that are sometimes required (eg `reactiveVal()`), for example if you need a dashboard to remember certain states – ask a colleague if you need one of these.
 - Use geographic codes (eg constituency codes) rather than names to filter datasets.
 - Name your constituency slicer `conSelect` each time (so referred to as `input$conSelect` in the server file).
 - Create functions for processes that you repeat in your server file – not just charts, maps and tables but also anything else repetitive. Where possible these should live in a setup script (eg `helper_functions.R`).
@@ -173,7 +184,7 @@ Please follow these instructions when creating reactives:
 **Don’t:**
 
 - Create reactives that duplicate data already available in other reactives – for example, if your filtered constituency list also has a region field, don’t separately define a reactive for the region. (Exception would be for reactives you’re going to refer to several times in the same dashboard, ie reactive text or a figure that gets referred to a lot).
-- Create more reactives than needed – if you have a wide dataset with one line per constituency, you don’t need a reactive.
+- Create more reactives than needed – if you have a wide dataset with one line per constituency, you don’t need more than one reactive.
 - Create reactives that do exactly the same job as a different reactive for other parts of the dashboards.
 - Create or manipulate data inside chart, map or table functions, unless this is unavoidable. Similarly, avoid complex calculations inside download handler functions (which are used to make download buttons).
 - `observeEvent` if you don’t need to – this is not usually necessary with ordinary reactives. LLMs often suggest this but you only really need to use it for more complex interactions.
@@ -223,7 +234,7 @@ pickerInput(
 )
 ```
 
-**`server.R`**: the value is available as `input$conSelect`. The example turns the chosen label into a code once, in a reactive, and every other reactive uses that code (codes are safer to filter on than names):
+**`server.R`**: the value (constituency name) is available as `input$conSelect`. The example turns the chosen label into a constituency code once, in a reactive, and every other reactive uses that code (codes are safer to filter on than names):
 
 ```r
 constituency_code <- reactive({
@@ -321,8 +332,8 @@ p_rating_column <- function(df) {
 **Notes:**
 
 - The `text = ...` aesthetic is what the hover tooltip shows.
-- The data frame passed in must contain the columns used (`CURRENT_ENERGY_RATING`, `number`).
-- For more example chart code, see the [clcharts](https://github.com/houseofcommonslibrary/clcharts) `README`
+- The data frame passed in must contain the columns that you use (in this case `CURRENT_ENERGY_RATING` and `number`).
+- For more example chart code, see the [clcharts](https://github.com/houseofcommonslibrary/clcharts){target="_blank"} `README`
 
 **Converter functions** turn a ggplot into a plotly chart and switch off the controls you don't want (zoom, drag, the mode bar):
 
@@ -437,7 +448,7 @@ p_summary_table <- function(df_c, df_r) {
 
 **Notes:**
 
-- Rename each data frame's label column to the same name (`Geography`) before `rbind()`, so the three can be stacked.
+- Rename each data frame's label column to the same name (eg, `Geography`) before `rbind()`, so the three can be stacked.
 - `rbind()` needs identical columns in each data frame, in the same order.
 - `formatCurrency(2, ...)` refers to the column by position (the second column), so if you change the column order, update the number.
 
@@ -729,7 +740,6 @@ When focusing on an interactive element (e.g dropdown, tab headers, or leaflet m
 - Use a title panel at the top of the dashboard
 - Break up text with `<h2>` headings
 - Use `<p>` tags for text. If you need dynamic text, use `renderText()`. Avoid `renderUI()` for dynamic text.
-- Use as little vertical space as possible. If the dashboard can fit on one vertical screen with no scrolling, great.
 - Wrap `plotlyOutput()` elements in a `<div>` with `role="img"` and `aria-label="my alt text"`:
 ```r
 div(
@@ -757,7 +767,7 @@ Custom styles live in `www/style.css` and are linked in `ui.R`:
 tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "style.css"))
 ```
 
-To style an element, give it a class in `ui.R` and define that class in the CSS:
+To style an element, it is given a class in `ui.R` and that class is defined in the CSS:
 
 ```r
 # ui.R
@@ -777,7 +787,9 @@ downloadButton("download_constituency", "Download", class = "download")
 
 The stylesheet also sets fonts, heading colour (`h2`), tab/pill colours (`.nav-pills`), the dropdown (`.bootstrap-select`), and map controls (`.leaflet-*`).
 
-Keep colours consistent between the CSS and the chart code. The example uses `#006548` (dark green) in both `style.css` and in the `fill`/`colour` settings in `R/charts.R`.
+This keeps colours consistent between the CSS and the chart code. The example uses `#006548` (dark green) in both `style.css` and in the `fill`/`colour` settings in `R/charts.R`.
+
+We have a Library style CSS that lives in the example code -> www folder. Use this - if anything doesn't look right or needs to be adapted, please talk to Louie or Sonja.
 
 ### 7.9 URL bookmarking
 
@@ -787,7 +799,11 @@ Keep colours consistent between the CSS and the chart code. The example uses `#0
 shiny::enableBookmarking(store = "url")
 ```
 
-This lets the current state of the app (for example, which constituency is selected) be saved in the URL, so a link can be shared. Because of this, `ui` must be written as a **function** that takes `request`:
+This lets the current state of the app (for example, which constituency is selected) be saved in the URL, so a link can be shared. The share link will look something like this:
+
+`https://commonslibrary.parliament.uk/research-briefings/cbp-10897/?conSelect=%22Stalybridge%20and%20Hyde%22`
+
+Because of this, `ui` must be written as a **function** that takes `request`:
 
 ```r
 ui <- function(request) { ... }
@@ -808,7 +824,7 @@ Use this order every time:
 
 ## 9. Using your own data
 
-The code expects certain columns and object names. Replace the example data with your own and either keep these names or update the code that uses them. (An easy way to do this is to use `Ctrl+F` and replace all instances of the variable name.)
+The example code expects certain columns and object names. Replace the example data with your own and update the code that uses these column names them. (An easy way to do this is to use `Ctrl+F` and replace all instances of the variable name.)
 
 | File | Columns used by the code |
 | --- | --- |
@@ -829,7 +845,7 @@ Things that must line up:
 
 To use a different geography (local authorities, regions, schools...), swap `constituency`/`CONSTITUENCY` for your equivalent throughout, and keep the same pattern: one dropdown, one code-lookup reactive, filtered reactives, and render/output pairs.
 
-For template code for different maps, see the Code projects folder on the H drive. Also see our [guidance on creating maps in R](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5&id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance%2FMapping%20in%20R%2Ehtml&parent=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance).
+For template code for different maps, see the Code projects folder on the H drive. Also see our [guidance on creating maps in R](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5&id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance%2FMapping%20in%20R%2Ehtml&parent=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FSection%20guidance%2FR%20guidance){target="_blank"}.
 
 ## 10. Troubleshooting
 
@@ -841,12 +857,14 @@ For template code for different maps, see the Code projects folder on the H driv
 | `Operation not allowed without an active reactive context` | `input$...` or a reactive was used outside `reactive()`, `render...()` or `observe()` |
 | Table errors with `names do not match previous names` | The data frames passed to `rbind()` have different column names or order |
 | Map shows grey areas | The join between data and boundaries failed (codes don't match), or the value is `NA` |
+| `Object of type 'closure' is not subsettable` | The reactive object does not have brackets at the end (eg `cost_over_time_con` instead of `cost_over_time_con()`)
 
 ## Other resources
 
-- [For layout and design, see our dashboard guidance](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI%2F3%20Designing%20and%20building%20a%20dashboard&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5)
-- [Mastering Shiny](https://mastering-shiny.org/) (free online book, paper version lives on Sonja's desk)
-- [Shiny documentation](https://shiny.posit.co/r/getstarted/)
-- [bslib](https://rstudio.github.io/bslib/) for page layouts
-- [plotly for R](https://plotly.com/r/), [DT](https://rstudio.github.io/DT/), and [leaflet for R](https://rstudio.github.io/leaflet/)
+- [For layout and design, see our dashboard guidance](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI%2F3%20Designing%20and%20building%20a%20dashboard&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}
+- [Mastering Shiny](https://mastering-shiny.org/){target="_blank"} (free online book, paper version lives on Sonja's desk)
+- [Shiny documentation](https://shiny.posit.co/r/getstarted/){target="_blank"}
+- [bslib](https://rstudio.github.io/bslib/){target="_blank"} for page layouts
+- [plotly for R](https://plotly.com/r/){target="_blank"}, [DT](https://rstudio.github.io/DT/){target="_blank"}, and [leaflet for R](https://rstudio.github.io/leaflet/){target="_blank"}
+- [More general guidance on dashboards](https://hopuk.sharepoint.com/sites/hct-RI/Guidance/Forms/AllItems.aspx?id=%2Fsites%2Fhct%2DRI%2FGuidance%2FStatistics%2C%20Charts%20and%20Tables%2FGroups%20and%20software%20guidance%2FDashboard%20guidance%20%2D%20R%20Shiny%20and%20Power%20BI&viewid=4ecd91bd%2Dcf88%2D4a92%2Dab90%2D4b4777ec35d9&d=w101e20879ba4465786928f0a12c1ad50&csf=1&siteid=e27c9d83%2D59e7%2D4ce6%2Da1cf%2D413a4dcc8d5f&webid=465ce727%2Dfedd%2D4f5f%2D88b6%2D6141eef04a1a&uniqueid=101e2087%2D9ba4%2D4657%2D8692%2D8f0a12c1ad50&FolderCTID=0x01200010A813C065EC27459BBF6E40471E15A5){target="_blank"}
 
