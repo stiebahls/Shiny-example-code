@@ -1,7 +1,5 @@
 server <- function(input, output, session) {
-
-
-# Reactives --------------------------------------------------------------
+  # Reactives --------------------------------------------------------------
 
   #defined reactive values that will be used in dashboard widgets
 
@@ -43,8 +41,18 @@ server <- function(input, output, session) {
     )
   })
 
- 
-# Plot outputs -----------------------------------------------------------
+  con_outline <- reactive({
+    st_read(paste0("./data/constituency/", constituency_code(), ".gpkg"))
+  })
+
+  msoa_outline <- reactive({
+    st_read(
+      paste0("./data/msoa/", constituency_code(), ".gpkg")
+    ) |>
+      left_join(msoa_data, by = c("Code" = "msoa_code"))
+  })
+
+  # Plot outputs -----------------------------------------------------------
 
   # renderPlotly re-runs whenever reactive inputs inside are updated
 
@@ -60,14 +68,13 @@ server <- function(input, output, session) {
   })
 
   # --- Table output ---
-  # DT::renderDT creates an interactive table
-  output$overview_table <- renderDT({
+  # reactable::renderReactable creates an interactive table
+  output$overview_table <- renderReactable({
     #p_summary_table() is a table creating function defined in /R/charts.R
-    p_summary_table(df_con(), df_reg())
+    p_summary_table_reactable(df_con(), df_reg())
   })
 
-
-# Static text outputs ----------------------------------------------------
+  # Static text outputs ----------------------------------------------------
 
   # renderText returns text, and the contents of the blurbs are defined in /R/setup.R
 
@@ -81,6 +88,10 @@ server <- function(input, output, session) {
 
   output$blurb3 <- renderText({
     text_intro3
+  })
+
+  output$blurb4 <- renderText({
+    text_intro4
   })
 
   # Dynamic headings and blurbs that change depend on constituency selection
@@ -98,12 +109,15 @@ server <- function(input, output, session) {
     make_heading_three(data = df_con())
   })
 
+  output$heading_four <- renderText({
+    make_heading_four(data = df_con())
+  })
+
   output$ratings_blurb <- renderText({
     make_ratings_blurb(ratings_data = ratings_con())
   })
 
-
-# Download handler -------------------------------------------------------
+  # Download handler -------------------------------------------------------
 
   # Lets user download filtered data as a CSV
   output$download_constituency <- downloadHandler(
@@ -115,9 +129,8 @@ server <- function(input, output, session) {
     }
   )
 
-
-# Leaflet map output -----------------------------------------------------
-output$map <- renderLeaflet({
+  # Leaflet map output -----------------------------------------------------
+  output$map <- renderLeaflet({
     # Define percentiles for binning CO2 values
     percentiles <- c(0.1, 0.25, 0.5, 0.75, 0.9)
 
@@ -184,6 +197,46 @@ output$map <- renderLeaflet({
         "function(el, x) {
           L.control.zoom({position:'topright'}).addTo(this);
         }"
+      )
+  })
+
+  output$msoa_map <- renderLeaflet({
+    make_msoa_map(
+      con_outline = con_outline(), #the reactive object containing the constituency boundary
+      msoa_outline = msoa_outline(), #the reactive object containing the msoa boundaries
+      msoa_column = msoa_data$EPC, #the numerical column in the msoa dataframe that you want to build a palette from
+      msoa_boundary_column = msoa_outline()$EPC #the numerical column in the msoa boundary file that you want to map
+    )
+  })
+
+  output$msoa_table <- renderReactable({
+    make_msoa_table(msoa_outline())
+  })
+
+  selected_row <- reactive({
+    getReactableState("msoa_table", "selected")
+  })
+
+  #this code
+  observe({
+    row <- selected_row()
+
+    # clear any previous highlight (also runs when selection is cleared)
+    leafletProxy("msoa_map") |>
+      clearGroup("selectedMSOA")
+
+    req(row)
+
+    leafletProxy("msoa_map") |>
+      addPolygons(
+        data = msoa_outline()[row, ],
+        color = "#111111",
+        group = "selectedMSOA",
+        smoothFactor = 0,
+        stroke = TRUE,
+        weight = 3,
+        opacity = 1,
+        fillOpacity = 0
       )
   })
 }

@@ -41,69 +41,82 @@ p_summary_table <- function(df_c, df_r) {
 }
 
 
-tableHeaderStyle  <-
+tableHeaderStyle <-
   list(
-    fontWeight    = "bold",
-    textAlign     = "left",
-    padding       = "10px 18px",
-   #background    = "#F0EEED",
-    color         = "#333",
-    borderBottom  = "1px solid rgba(0, 0, 0, 0.3)",
-    borderTop     = "none",
+    fontWeight = "bold",
+    padding = "10px 18px",
+    background = "#F0EEED",
+    color = "#333",
+    borderBottom = "1px solid rgba(0, 0, 0, 0.3)",
+    borderTop = "none",
     textTransform = "none",
-    fontSize      = "1em",
-    textAlign = "right"
-)
+    fontSize = "1em"
+  )
 
-
-
+ 
+# Turn column names like "HEATING_COST_CURRENT" into "Heating cost current"
+clean_header <- function(value) {
+  value |>
+    gsub("_", " ", x = _) |>
+    tolower() |>
+    (\(x) paste0(toupper(substring(x, 1, 1)), substring(x, 2)))()
+}
+ 
 p_summary_table_reactable <- function(df_c, df_r) {
-  
-  constituency_name <- df_c$CONSTITUENCY_LABEL[[1]] #name of chosen constituency
-
-  df_c <- df_c |> #adjust input constituency dataframe
+  df_c <- df_c |>
     subset(select = -c(CONSTITUENCY)) |>
     rename("Geography" = "CONSTITUENCY_LABEL")
-  df_r <- df_r |> #adjust input region dataframe
+ 
+  df_r <- df_r |>
     rename("Geography" = "Region")
-  uk <- uk_data |> #UK data for use in every table
+ 
+  uk <- uk_data |>
     rename("Geography" = GEOGRAPHY)
-
-  table_data <- rbind(df_c, df_r, uk) #|> #creating table data based on the above
-    # rename(
-    #   "Heating cost" = "HEATING_COST_CURRENT",
-    #   "CO2 emissions" = "CO2_EMISSIONS",
-    #   "Energy efficiency" = "CURRENT_ENERGY_EFFICIENCY"
-    # )
-
-  #create the table itself
-    table_data |>
+ 
+  table_data <- rbind(df_c, df_r, uk)
+ 
+  table_data |>
     reactable(
-      # columns is a named list; dataframe_column = colDef( options ...)
-      columns = list(
-        Geography = colDef(show = TRUE, name = "Geography"),
-        HEATING_COST_CURRENT = colDef(show = TRUE, name = "Heating cost", format = colFormat(prefix = "£", separators = TRUE, digits = 0)),
-        CO2_EMISSIONS = colDef(show = TRUE, name = "CO2 emissions"),
-        CURRENT_ENERGY_EFFICIENCY   = colDef(show = TRUE, name = "Energy efficiency")
-      ),
-      # if your df is large, use a defaultColDef
-      # to hide other columns with show =  FALSE
-      # these options get applied to all columns,
-      # but can be overridden with colDefs above
       defaultColDef = colDef(
-        show        = FALSE,
-        sortable    = TRUE,
+        header = clean_header,
+        sortable = TRUE,
         headerStyle = tableHeaderStyle
       ),
-      # reactable-level option examples:
-      # show short buttons on each column
+      # only override what differs from the default
+      columns = list(
+        HEATING_COST_CURRENT = colDef(
+          format = colFormat(prefix = "£", separators = TRUE, digits = 0)
+        )
+      ),
       showSortable = TRUE,
-      # disable pagination; forces all items to be in 1 page
-      pagination   = FALSE,
-      # options for clicking a row
-      #selection    = "single",
-      #onClick      = "select",
-      # show a highlight on mouse hovering
-      #highlight    = TRUE
+      pagination = FALSE
     )
+}
+ 
+make_msoa_table <- function(msoa_outline) {
+  df <- msoa_outline |>
+    st_drop_geometry() |>
+    select(-Code) |>
+    arrange(desc(EPC))
+
+  reactable(
+    df,
+    selection = "single",
+    onClick = "select",
+    columns = list(
+      .selection = colDef(show = FALSE),
+      EPC = colDef(format = colFormat(separators = TRUE, digits = 1))
+    ),
+    defaultColDef = colDef(
+      sortable = TRUE,
+      headerStyle = tableHeaderStyle
+    ),
+    theme = reactableTheme(
+      cellPadding = "4px 8px",
+      cellStyle = list(fontSize = "0.8rem"),
+      rowSelectedStyle = list(backgroundColor = "#c9c6c4")
+    ),
+    showSortable = TRUE,
+    pagination = FALSE
+  )
 }

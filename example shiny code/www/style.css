@@ -164,28 +164,28 @@
  }
 
  .download {
-  background-color: #ffffff !important;
-  font-size: 13px !important;
-font-weight: Bold !important;
-  color: #222222 !important;
-}
+   background-color: #ffffff !important;
+   font-size: 13px !important;
+   font-weight: Bold !important;
+   color: #222222 !important;
+ }
 
-/* Hover, focus, active states */
-.download:hover,
-.download:focus,
-.download:active,
-.download.active {
-  background-color: #7FCBBD !important;
-  color: #222222 !important;
-  font-weight: bold !important;
-}
+ /* Hover, focus, active states */
+ .download:hover,
+ .download:focus,
+ .download:active,
+ .download.active {
+   background-color: #7FCBBD !important;
+   color: #222222 !important;
+   font-weight: bold !important;
+ }
 
-/* Optional: special toggle-style override like your example */
-.toggle.download:hover {
-  background-color: #006548 !important;
-  color: white !important;
-  font-weight: bold !important;
-}
+ /* Optional: special toggle-style override like your example */
+ .toggle.download:hover {
+   background-color: #006548 !important;
+   color: white !important;
+   font-weight: bold !important;
+ }
 
  .notetext {
    font-size: 10pt;
@@ -223,21 +223,21 @@ font-weight: Bold !important;
  }
 
 
-.bootstrap-select > .dropdown-toggle {
-  background-color: #006548 !important;
-  color: white !important;
-  font-size: 15px !important;
-  border-color: #006548 !important;
-  font-weight: bold !important;
-}
+ .bootstrap-select>.dropdown-toggle {
+   background-color: #006548 !important;
+   color: white !important;
+   font-size: 15px !important;
+   border-color: #006548 !important;
+   font-weight: bold !important;
+ }
 
 
-.bootstrap-select > .dropdown-toggle:hover,
-.bootstrap-select > .dropdown-toggle:focus,
-.bootstrap-select > .dropdown-toggle:active {
-  background-color: #7FCBBD !important;
-  color: #222222 !important;
-}
+ .bootstrap-select>.dropdown-toggle:hover,
+ .bootstrap-select>.dropdown-toggle:focus,
+ .bootstrap-select>.dropdown-toggle:active {
+   background-color: #7FCBBD !important;
+   color: #222222 !important;
+ }
 
 
  .bootstrap-select .dropdown-menu li a.active,
@@ -251,7 +251,3 @@ font-weight: Bold !important;
    color: black !important;
    /* optional */
  }
-
- .reactable .rt-th {
-  background-color: #000000;
-}
