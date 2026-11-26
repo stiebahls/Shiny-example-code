@@ -13,6 +13,10 @@ make_heading_three <- function(data) {
   paste0("Changes over time in ", data$CONSTITUENCY_LABEL)
 }
 
+make_heading_four <- function(data) {
+  paste0("Rates for different neighbourhoods in ", data$CONSTITUENCY_LABEL)
+}
+
 make_ratings_blurb <- function(ratings_data) {
 ratings_data <- filter(ratings_data,CURRENT_ENERGY_RATING == "A")
   paste("In",
@@ -28,3 +32,5 @@ text_intro <- "It's a good idea to have some text here that provides context, a 
 text_intro2 <- "Another blurb here would probably be good."
 
 text_intro3 <- "Some words about the chart and what it shows and (if necessary) how to use it."
+
+text_intro4 <- "The map and table below show statistical areas called 'MSOAs' around the constituency. Some MSOA boundaries only partially overlap constituencies, so the shaded area may extend beyond the black line showing the constituency boundary. Click a row in the table to show that neighbourhood's location on the map."

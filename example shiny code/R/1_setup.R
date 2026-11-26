@@ -12,6 +12,7 @@ library(shinyWidgets)
 library(leaflet)
 library(viridis)
 library(sf)
+library(htmltools)
 
 # Load datasets used by the app ------------------------------------------
 
@@ -22,6 +23,8 @@ constituency_summary <- read_csv(
 region_data <- read_csv("data/region_data.csv", show_col_types = FALSE)
 
 uk_data <- read_csv("data/uk_data.csv", show_col_types = FALSE)
+
+msoa_data <- read_csv("data/msoa_data.csv")
 
 constituency_ratings <- read_csv(
   "data/constituency_ratings.csv",
